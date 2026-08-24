@@ -11,7 +11,19 @@ const app = express();
 
 connectDB();
 
-app.use(cors());
+const allowedOrigins = [
+  "https://sunil-todo-app.vercel.app",
+  "http://localhost:5173",
+];
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type"],
+  })
+);
+app.options("*", cors());
 app.use(express.json());
 
 
