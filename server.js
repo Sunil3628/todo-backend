@@ -6,6 +6,7 @@ const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
 const taskRoutes = require("./routes/taskRoutes");
+const morgan = require("morgan");
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use(
 );
 app.options(/.*/, cors());
 app.use(express.json());
+app.use(morgan("dev"));
 
 
 app.get("/", (req, res) => {
