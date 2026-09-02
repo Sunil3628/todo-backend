@@ -1,5 +1,28 @@
 const Task = require("../models/Task");
 
+
+// create a new task
+const createTask = async (req, res) => {
+  try {
+    const { title, priority, dueDate } = req.body;
+
+
+    const task = await Task.create({
+      title,
+      priority,
+      dueDate,
+    });
+
+    res.status(201).json(task);
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to create task",
+      error: error.message,
+    });
+  }
+};
+
+
 // Get all tasks
 const getTasks = async (req, res) => {
   try {
@@ -13,35 +36,14 @@ const getTasks = async (req, res) => {
   }
 };
 
-// create a new task
-const createTask = async (req, res) => {
-  try {
-    const { title } = req.body;
 
-    if (!title || title.trim() === "") {
-      return res.status(400).json({
-        message: "Task title is required",
-      });
-    }
-
-    const task = await Task.create({
-      title: title.trim(),
-    });
-
-    res.status(201).json(task);
-  } catch (error) {
-    res.status(500).json({
-      message: "Failed to create task",
-      error: error.message,
-    });
-  }
-};
 
 // update a task
 const updateTask = async (req, res) => {
   try {
     const task = await Task.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
+      runValidators:true
     });
 
     if (!task) {
@@ -60,9 +62,8 @@ const updateTask = async (req, res) => {
 //Delete a task
 const deleteTask = async (req, res) => {
   try {
-    const { id } = req.params;
-
-    const task = await Task.findByIdAndDelete(id);
+    
+    const task = await Task.findByIdAndDelete(req.params.id);
 
     if (!task) {
       return res.status(404).json({

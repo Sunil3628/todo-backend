@@ -9,9 +9,9 @@ const {
 
 const router = express.Router();
 
-router.get("/",getTasks);
-
 router.post("/",createTask);
+
+router.get("/",getTasks);
 
 router.put("/:id",updateTask);
 
