@@ -11,6 +11,11 @@ const authMiddleware = require("./middleware/authMiddleware");
 
 const app = express();
 
+if (!process.env.MONGO_URI || !process.env.JWT_SECRET) {
+  console.error("Missing MONGO_URI or JWT_SECRET in backend/.env");
+  process.exit(1);
+}
+
 connectDB();
 
 const allowedOrigins = [
